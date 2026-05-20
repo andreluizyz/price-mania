@@ -1,6 +1,6 @@
 import requests
 
-def buscar_produtos(product="iphone"):
+def buscar_produtos(product):
     url = f"https://dummyjson.com/products/search?q={product}"
 
     answer = requests.get(url)
@@ -10,5 +10,29 @@ def buscar_produtos(product="iphone"):
         return
     
     data = answer.json()
-    for product in data:
-        print(product)
+    return data["products"]
+
+
+def mostrar_produtos(produtos):
+    if not produtos:
+        print("No products found.")
+        return
+    
+    print("\n📦 Products found:\n")
+    
+    for p in produtos:
+        print(f"Name: {p['title']}")
+        print(f"Price: ${p['price']}")
+        print(f"Rating: {p['rating']}")
+        print("-" * 30)
+
+
+def main():
+    product = input("Enter the product you want to find: ")
+    
+    products = buscar_produtos(product)
+    mostrar_produtos(products)
+
+
+if __name__ == "__main__":
+    main()
